@@ -8,6 +8,7 @@ import org.jooq.meta.jaxb.Jdbc
 
 plugins {
     kotlin("jvm") version "1.3.31"
+    maven
 }
 
 buildscript {
@@ -56,4 +57,20 @@ Sql(Driver().connect("jdbc:h2:mem:test-jooq-tools", null)).use { sql ->
         }
     }
     GenerationTool.generate(configuration)
+}
+
+val sourcesJar by tasks.creating(Jar::class) {
+    classifier = "sources"
+    from(sourceSets.main.get().allSource)
+    from("LICENSE")
+    from("README.md")
+}
+
+artifacts {
+    add("archives", sourcesJar)
+}
+
+tasks.jar {
+    from("LICENSE")
+    from("README.md")
 }
