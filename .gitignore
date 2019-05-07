@@ -1,0 +1,8 @@
+#gradle
+.gradle/
+build/
+/src/test/java/org/kotlin/everywhere/kejooq/database/
+
+#intellij
+.idea/
+out/
