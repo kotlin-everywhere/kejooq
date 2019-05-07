@@ -8,7 +8,7 @@ import java.lang.Integer.min
 
 
 data class Pagination<out T>(val first: Int, val total: Int, val last: Int, val page: Int, val items: List<T>,
-                             private val start: Int,
+                             internal val start: Int,
                              val prev: Int, val hasPrev: Boolean, val next: Int, val hasNext: Boolean,
                              val navPrev: Int, val hasNavPrev: Boolean, val navNext: Int,
                              val hasNavNext: Boolean, val pages: List<Int>) {
@@ -62,6 +62,26 @@ fun <R : Record> SelectLimitStep<R>.paginate(
         perPage: Int = 10,
         perNav: Int = 10
 ): Pagination<R> = Pagination.of(ctx = ctx, query = this, forPage = forPage, perPage = perPage, perNav = perNav)
+
+fun <T, U> Pagination<T>.map(mapper: (T) -> U): Pagination<U> {
+    return Pagination(
+            first = first,
+            total = total,
+            last = last,
+            page = page,
+            items = items.map(mapper),
+            start = start,
+            prev = prev,
+            hasPrev = hasPrev,
+            next = next,
+            hasNext = hasNext,
+            navPrev = navPrev,
+            hasNavPrev = hasNavPrev,
+            navNext = navNext,
+            hasNavNext = hasNavNext,
+            pages = pages
+    )
+}
 
 private fun ceilDivision(x: Int, y: Int): Int {
     return Math.ceil(x.toDouble() / y).toInt()
